@@ -56,7 +56,16 @@ int main()
 		scherm.bindTextuurPlaatje("flux1", 		2	+	(1-	pingPong));
 		scherm.bindTextuurPlaatje("droesem0", 	4	+		pingPong);
 		scherm.bindTextuurPlaatje("droesem1", 	4	+	(1-	pingPong));
+	};
 
+	auto bindTexturen = [&]()
+	{
+		scherm.bindTextuur("basis0", 			0	+		pingPong);
+		scherm.bindTextuur("basis1", 			0	+	(1-	pingPong));
+		scherm.bindTextuur("flux0", 			2	+		pingPong);
+		scherm.bindTextuur("flux1", 			2	+	(1-	pingPong));
+		scherm.bindTextuur("droesem0", 			4	+		pingPong);
+		scherm.bindTextuur("droesem1", 			4	+	(1-	pingPong));
 	};
 
 	scherm.doeRekenVerwerker("initialiseer", glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);
@@ -71,8 +80,7 @@ int main()
 		pingPong = 1 - pingPong;
 
 		scherm.bereidRenderVoor("toonZand");
-		scherm.bindTextuur("basis0", pingPong);
-		scherm.bindTextuur("basis1", 1-pingPong);
+		bindTexturen();
 		rooster.tekenJezelfPatchy();
 		scherm.rondRenderAf();
 	}

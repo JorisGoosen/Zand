@@ -1,3 +1,5 @@
+#version 440
+
 #include "definities.glsl"
 
 float hoogte(ivec2 hier)

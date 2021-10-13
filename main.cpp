@@ -8,13 +8,14 @@ int main()
 	scherm.maakRekenShader(			"initialiseer", 		"shaders/initialiseer.glsl"													);
 	scherm.maakRekenShader(			"fluxen", 				"shaders/fluxen.glsl"														);
 	scherm.maakRekenShader(			"waterHoogte", 			"shaders/waterHoogte.glsl"													);
+	scherm.maakRekenShader(			"sedimentStroming", 	"shaders/sedimentStroming.glsl"												);
+	scherm.maakRekenShader(			"sedimentKopieren", 	"shaders/sedimentKopieren.glsl"												);
 
 	glm::vec2 afmetingen = 	scherm.laadTextuurUitPng("basis.png", 	"basis0", 								false, false, false, GL_RGBA16F);
 							scherm.maakTextuur(						"basis1", 	afmetingen.x, afmetingen.y, false, false, false, GL_RGBA16F);
 							scherm.maakTextuur(						"flux0", 	afmetingen.x, afmetingen.y, false, false, false, GL_RGBA16F);
 							scherm.maakTextuur(						"flux1", 	afmetingen.x, afmetingen.y, false, false, false, GL_RGBA16F);
-							scherm.maakTextuur(						"droesem0", afmetingen.x, afmetingen.y, false, false, false, GL_RGBA16F);
-							scherm.maakTextuur(						"droesem1", afmetingen.x, afmetingen.y, false, false, false, GL_RGBA16F);
+							scherm.maakTextuur(						"snelheid", afmetingen.x, afmetingen.y, false, false, false, GL_RGBA16F);
 							
 	glClearColor(0,0,0,0);
 
@@ -54,8 +55,7 @@ int main()
 		scherm.bindTextuurPlaatje("basis1", 	0	+	(1-	pingPong));
 		scherm.bindTextuurPlaatje("flux0", 		2	+		pingPong);
 		scherm.bindTextuurPlaatje("flux1", 		2	+	(1-	pingPong));
-		scherm.bindTextuurPlaatje("droesem0", 	4	+		pingPong);
-		scherm.bindTextuurPlaatje("droesem1", 	4	+	(1-	pingPong));
+		scherm.bindTextuurPlaatje("snelheid", 	4);
 	};
 
 	auto bindTexturen = [&]()
@@ -64,8 +64,22 @@ int main()
 		scherm.bindTextuur("basis1", 			0	+	(1-	pingPong));
 		scherm.bindTextuur("flux0", 			2	+		pingPong);
 		scherm.bindTextuur("flux1", 			2	+	(1-	pingPong));
-		scherm.bindTextuur("droesem0", 			4	+		pingPong);
-		scherm.bindTextuur("droesem1", 			4	+	(1-	pingPong));
+		scherm.bindTextuur("snelheid", 			4);
+	};
+
+	auto bindVoorStroming = [&]()
+	{
+		if(pingPong == 0)
+		{
+			scherm.bindTextuur(			"basis0", 0);
+			scherm.bindTextuurPlaatje(	"basis1", 1);
+		}
+		else
+		{
+			scherm.bindTextuur(			"basis1", 0);
+			scherm.bindTextuurPlaatje(	"basis0", 1);
+		}
+		scherm.bindTextuurPlaatje("snelheid", 	4);
 	};
 
 	scherm.doeRekenVerwerker("initialiseer", glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);
@@ -74,8 +88,10 @@ int main()
 
 	while(!scherm.stopGewenst())
 	{
-		scherm.doeRekenVerwerker("fluxen", 		glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
-		scherm.doeRekenVerwerker("waterHoogte", glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
+		scherm.doeRekenVerwerker("fluxen", 				glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
+		scherm.doeRekenVerwerker("waterHoogte", 		glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
+		scherm.doeRekenVerwerker("sedimentStroming", 	glm::uvec3(afmetingen.x, afmetingen.y, 1), bindVoorStroming);	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
+		scherm.doeRekenVerwerker("sedimentKopieren", 	glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
 		
 		pingPong = 1 - pingPong;
 

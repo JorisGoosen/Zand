@@ -4,15 +4,23 @@
 int main()
 {
 	weergaveSchermPerspectief scherm("Perspectief Demo");
-	scherm.maakVlakVerdelingsShader("toonZand", "shaders/toonZand.vert", "shaders/toonZand.frag", "shaders/toonZand.eval");
+	scherm.maakVlakVerdelingsShader("toonZand", 			"shaders/toonZand.vert", "shaders/toonZand.frag", "shaders/toonZand.eval"	);
+	scherm.maakRekenShader(			"initialiseer", 		"shaders/initialiseer.glsl"													);
+	scherm.maakRekenShader(			"fluxen", 				"shaders/fluxen.glsl"														);
+	scherm.maakRekenShader(			"waterHoogte", 			"shaders/waterHoogte.glsl"													);
 
-	glm::vec2 afmetingen = scherm.laadTextuurUitPng("basis.png", "basis0", false, false, false, GL_RGBA16F);
-
+	glm::vec2 afmetingen = 	scherm.laadTextuurUitPng("basis.png", 	"basis0", 								false, false, false, GL_RGBA16F);
+							scherm.maakTextuur(						"basis1", 	afmetingen.x, afmetingen.y, false, false, false, GL_RGBA16F);
+							scherm.maakTextuur(						"flux0", 	afmetingen.x, afmetingen.y, false, false, false, GL_RGBA16F);
+							scherm.maakTextuur(						"flux1", 	afmetingen.x, afmetingen.y, false, false, false, GL_RGBA16F);
+							scherm.maakTextuur(						"droesem0", afmetingen.x, afmetingen.y, false, false, false, GL_RGBA16F);
+							scherm.maakTextuur(						"droesem1", afmetingen.x, afmetingen.y, false, false, false, GL_RGBA16F);
+							
 	glClearColor(0,0,0,0);
 
-	vierkantRooster rooster(16, 16, 2.0f);
+	vierkantRooster rooster(128, 128, 4.0f);
 
-	float vlakverdelingen = 16;
+	float vlakverdelingen = 32;
 
 	auto zetVlakverdelingenStandaardenOpnieuw = [&]()
 	{
@@ -27,7 +35,7 @@ int main()
 	};
 
 	zetVlakverdelingenStandaardenOpnieuw();
-	
+
 	scherm.setCustomKeyhandler([&](int key, int scancode, int action, int mods)
 	{
 		if(action == GLFW_PRESS || action == GLFW_REPEAT)
@@ -38,10 +46,33 @@ int main()
 			}
 	});
 
+	size_t pingPong = 0;
+
+	auto bindPlaatjes = [&]()
+	{
+		scherm.bindTextuurPlaatje("basis0", 	0	+		pingPong);
+		scherm.bindTextuurPlaatje("basis1", 	0	+	(1-	pingPong));
+		scherm.bindTextuurPlaatje("flux0", 		2	+		pingPong);
+		scherm.bindTextuurPlaatje("flux1", 		2	+	(1-	pingPong));
+		scherm.bindTextuurPlaatje("droesem0", 	4	+		pingPong);
+		scherm.bindTextuurPlaatje("droesem1", 	4	+	(1-	pingPong));
+
+	};
+
+	scherm.doeRekenVerwerker("initialiseer", glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);
+
+	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
+
 	while(!scherm.stopGewenst())
 	{
-		scherm.bereidRenderVoor();
-		scherm.bindTextuur("basis0", 0);
+		scherm.doeRekenVerwerker("fluxen", 		glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
+		scherm.doeRekenVerwerker("waterHoogte", glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
+		
+		pingPong = 1 - pingPong;
+
+		scherm.bereidRenderVoor("toonZand");
+		scherm.bindTextuur("basis0", pingPong);
+		scherm.bindTextuur("basis1", 1-pingPong);
 		rooster.tekenJezelfPatchy();
 		scherm.rondRenderAf();
 	}

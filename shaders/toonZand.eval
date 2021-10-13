@@ -35,8 +35,10 @@ void main()
     );
 
     texFrag = interpolate2(tex[0], tex[1], tex[2], tex[3]);
+    
+    vec4 basis = texture(basis0, texFrag);
+    p.y = (basis.r + basis.b);
 
-    p.y = texture(basis0, texFrag).x;
     gl_Position = projectie * modelView * p;
 
     

@@ -8,5 +8,6 @@ in vec2 texFrag;
 
 void main()
 {
-	col = texture(basis0, texFrag);
+	vec4 basis = texture(basis0, texFrag);
+	col =  vec4(basis.x-basis.b,0,basis.b * 10.0,1);// : vec4(,0,0,1);
 }

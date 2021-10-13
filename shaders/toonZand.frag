@@ -2,9 +2,9 @@
 
 out vec4 col;
 
-in vec3 normal;
+in vec2 tex;
 
 void main()
 {
-	col = vec4((vec3(1) + normal) / vec3(2), 1);
+	col = vec4(tex, 0, 1);
 }

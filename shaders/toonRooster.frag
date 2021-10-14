@@ -18,14 +18,18 @@ void main()
 	vec3 normaal	= vec3(basis.a, snelheid.zw);
 	float helder	=  dot(normalize(vec3(1,1,1)), normaal);
 
-	if(isZand)	col	= max(0.5, helder) * vec4(basis.x * 0.5 + 0.5, basis.x * 0.8, 0, 1);
+	if(isZand)	col	= max(0.5, helder) * vec4(abs(-1.0 + (2.0 * basis.x)) , basis.x * 0.8, 0, 1);
 	else
 	{
 		//vec4 droesem 	= texture(snelheid0,	texFrag);
 
-		if(basis.b <= 0.01)
+		if(basis.b <= hoogteSchalingInv)
 			discard;
 
-		col = vec4(0.0, 0.0, 0.8, max(0.2, min(0.8, basis.b * 10.0)));
+		snelheid.xy *= hoogteSchalingInv;
+
+		col = //vec4(length(snelheid.xy), basis.g * 10.0,
+				vec4(abs(snelheid.xy), 
+				 0.8, max(0.2, min(0.8, basis.b * 10.0)));
 	}
 }

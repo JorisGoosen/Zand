@@ -27,14 +27,17 @@ void main()
 	basis.b					+= volumeVerandering;
 
 	float droesem 			= basis.g;
-	vec2 snelheid			= vec2(inFlux.g - flux.g + flux.r - inFlux.r / 2.0, inFlux.b - flux.b - inFlux.a - flux.a / 2.0);
-	vec4 buren				= vec4(grondHoogte(ivec2(-1, 0)), grondHoogte(ivec2(1, 0)), grondHoogte(ivec2(0, 1)), grondHoogte(ivec2(0, -1)));
+	vec2 snelheid			= vec2((inFlux.g - flux.g + flux.r - inFlux.r) / 2.0, (inFlux.a - flux.a + flux.b - inFlux.b ) / 2.0);
+	vec4 buren				= vec4(grondHoogte(ivec2(-1, 0)), grondHoogte(ivec2(1, 0)), grondHoogte(ivec2(0, 1)), grondHoogte(ivec2(0, -1))),
+			burenSchuin		= vec4(grondHoogte(ivec2(-1, 1)), grondHoogte(ivec2(1, 1)), grondHoogte(ivec2(-1, -1)), grondHoogte(ivec2(1, -1)));
 //	vec2 gradienten			= //vec2(((buren.y + basis.r) / 2.0) - ((buren.x + basis.r) / 2.0), ((buren.z + basis.r) / 2.0) - ((buren.w + basis.r) / 2.0));
 	vec3 normaal			= normalize(vec3((buren.y - buren.x) * 2.0, 4.0, (buren.z - buren.w) * 2.0));
 								//normalize(vec3(((buren.y + basis.r) - (buren.x + basis.r)), 4.0, ((buren.z + basis.r) - (buren.w + basis.r))));
 
-	vec2 snelheidRichting	= normalize(snelheid);
-	float 	lokaleHelling	= sin(0.5 * acos(1.0 - dot(normaal, normalize(vec3(snelheidRichting.x,1,snelheidRichting.y))))),
+	float verwachtteHoogte	= (som4(buren) + som4(burenSchuin)) / 8.0;
+
+//	vec2 snelheidRichting	= normalize(snelheid);
+	float 	lokaleHelling	= max(0.00001, min(1, max(0, basis.r - verwachtteHoogte) * hoogteSchalingInv)),//0.1 * min(1, max(0, dot(normaal, normalize(-vec3(snelheid.x,0,snelheid.y))))),
 			draagkracht		= DROESEMKRACHT * lokaleHelling * length(snelheid);
 
 	if(draagkracht > droesem)	

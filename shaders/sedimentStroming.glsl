@@ -15,8 +15,8 @@ void main()
 	vec2 plek 		= vec2(PLEK);
 	vec2 snelheid 	= imageLoad(snelheidPlt, PLEK).xy;
 
-	vec4 	huidigeBasis			= texture(basis1, plek 								/ vec2(imageSize(basis0))),
-			geinterpoleerdeBasis 	= texture(basis1, (plek - (snelheid * TIJD_STAP)) 	/ vec2(imageSize(basis0))),
+	vec4 	huidigeBasis			= texture(basis1, plek 													/ vec2(imageSize(basis0))),
+			geinterpoleerdeBasis 	= texture(basis1, (plek - (snelheid * TIJD_STAP * hoogteSchalingInv)) 	/ vec2(imageSize(basis0))),
 			oudeBasis				= imageLoad(basis0, PLEK);
 			
 //	if(huidigeBasis.z > 0.0)

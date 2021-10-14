@@ -25,7 +25,7 @@ layout(binding = 4, rgba16f)  	uniform image2D snelheidPlt;
 #define ZWAARTEKRACHT   10.0 //misschien op 1 zetten?
 #define DROESEMKRACHT   1.0
 #define OPLOSHEID       0.0001
-#define BEZINKHEID      0.01
+#define BEZINKHEID      0.5
 
 float som4(vec4 telMeOp)
 {

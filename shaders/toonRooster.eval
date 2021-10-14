@@ -2,6 +2,7 @@
 
 uniform mat4 projectie;
 uniform mat4 modelView;
+uniform bool isZand;
 
 layout(binding = 0)	uniform sampler2D basis0;
 
@@ -37,7 +38,9 @@ void main()
     texFrag = interpolate2(tex[0], tex[1], tex[2], tex[3]);
     
     vec4 basis = texture(basis0, texFrag);
-    p.y = (basis.r + basis.b);
+
+    if(isZand)	p.y = basis.r;
+    else        p.y = basis.r + basis.b;
 
     gl_Position = projectie * modelView * p;
 

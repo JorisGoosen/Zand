@@ -4,7 +4,7 @@
 int main()
 {
 	weergaveSchermPerspectief scherm("Perspectief Demo");
-	scherm.maakVlakVerdelingsShader("toonZand", 			"shaders/toonZand.vert", "shaders/toonZand.frag", "shaders/toonZand.eval"	);
+	scherm.maakVlakVerdelingsShader("toonRooster", 			"shaders/toonRooster.vert", "shaders/toonRooster.frag", "shaders/toonRooster.eval"	);
 	scherm.maakRekenShader(			"initialiseer", 		"shaders/initialiseer.glsl"													);
 	scherm.maakRekenShader(			"fluxen", 				"shaders/fluxen.glsl"														);
 	scherm.maakRekenShader(			"waterHoogte", 			"shaders/waterHoogte.glsl"													);
@@ -37,7 +37,7 @@ int main()
 
 	zetVlakverdelingenStandaardenOpnieuw();
 
-	scherm.setCustomKeyhandler([&](int key, int scancode, int action, int mods)
+	scherm.zetEigenToetsVerwerker([&](int key, int scancode, int action, int mods)
 	{
 		if(action == GLFW_PRESS || action == GLFW_REPEAT)
 			switch(key)
@@ -86,6 +86,13 @@ int main()
 
 	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
 
+	auto zetIsZand = [&](bool isZand) { glUniform1ui(glGetUniformLocation(scherm.huidigProgramma(), "isZand"), static_cast<uint>(isZand)); };
+
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_DEPTH_TEST);
+	//glCullFace(GL_CCW);
+	glEnable(GL_CULL_FACE);
+
 	while(!scherm.stopGewenst())
 	{
 		scherm.doeRekenVerwerker("fluxen", 				glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
@@ -95,9 +102,19 @@ int main()
 		
 		pingPong = 1 - pingPong;
 
-		scherm.bereidRenderVoor("toonZand");
+		glDisable(GL_BLEND);
+		scherm.bereidRenderVoor("toonRooster");
 		bindTexturen();
+		zetIsZand(true);
 		rooster.tekenJezelfPatchy();
+
+		glEnable(GL_BLEND);
+		
+		scherm.bereidRenderVoor("toonRooster", false);
+		bindTexturen();
+		zetIsZand(false);
+		rooster.tekenJezelfPatchy();
+
 		scherm.rondRenderAf();
 	}
 }

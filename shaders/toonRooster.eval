@@ -25,6 +25,8 @@ vec2 interpolate2(in vec2 v0, in vec2 v1, in vec2 v2, in vec2 v3)
 out vec2 texFrag;
 in vec2 tex[];
 
+uniform float hoogteSchalingInv;
+
 void main()
 {
     vec4 p = 
@@ -41,6 +43,8 @@ void main()
 
     if(isZand)	p.y = basis.r;
     else        p.y = basis.r + basis.b;
+
+	p.y *= hoogteSchalingInv;
 
     gl_Position = projectie * modelView * p;
 

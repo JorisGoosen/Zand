@@ -18,14 +18,16 @@ layout(binding = 4, rgba16f)  	uniform image2D snelheidPlt;
     snelheid0/1  =  {   snelheidX, snelheidY,   ???,    ???     }
 */
 
+uniform float hoogteSchaling; //Als de hoogte van zand tussen 0 en 1 ligt, dan moeten we de afstand tussen de cellen afleiden uit textuurgroote en schaling
+uniform float hoogteSchalingInv;
 
 #define PIJP_DIKTE      1.0
 #define PIJP_LENGTE     1.0
-#define TIJD_STAP       0.066666
+#define TIJD_STAP       0.1
 #define ZWAARTEKRACHT   10.0 //misschien op 1 zetten?
 #define DROESEMKRACHT   1.0
-#define OPLOSHEID       0.0001
-#define BEZINKHEID      0.5
+#define OPLOSHEID       0.001
+#define BEZINKHEID      0.1
 
 float som4(vec4 telMeOp)
 {

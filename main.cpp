@@ -49,6 +49,14 @@ int main()
 
 	size_t pingPong = 0;
 
+
+	auto zetHoogteSchalingUniform = [&]()
+	{
+		float hoogteSchaling = float(afmetingen.x);
+		glUniform1f(glGetUniformLocation(scherm.huidigProgramma(), "hoogteSchaling"), hoogteSchaling );//1.0 / (/*(rooster.schaling() * 1.0) */ 1.0 / float(afmetingen.x)));
+		glUniform1f(glGetUniformLocation(scherm.huidigProgramma(), "hoogteSchalingInv"), 1.0 / hoogteSchaling );
+	};
+
 	auto bindPlaatjes = [&]()
 	{
 		scherm.bindTextuurPlaatje("basis0", 	0	+		pingPong);
@@ -56,6 +64,8 @@ int main()
 		scherm.bindTextuurPlaatje("flux0", 		2	+		pingPong);
 		scherm.bindTextuurPlaatje("flux1", 		2	+	(1-	pingPong));
 		scherm.bindTextuurPlaatje("snelheid", 	4);
+
+		zetHoogteSchalingUniform();
 	};
 
 	auto bindTexturen = [&]()
@@ -65,6 +75,8 @@ int main()
 		scherm.bindTextuur("flux0", 			2	+		pingPong);
 		scherm.bindTextuur("flux1", 			2	+	(1-	pingPong));
 		scherm.bindTextuur("snelheid", 			4);
+
+		zetHoogteSchalingUniform();
 	};
 
 	auto bindVoorStroming = [&]()
@@ -80,6 +92,8 @@ int main()
 			scherm.bindTextuurPlaatje(	"basis0", 1);
 		}
 		scherm.bindTextuurPlaatje("snelheid", 	4);
+
+		zetHoogteSchalingUniform();
 	};
 
 	scherm.doeRekenVerwerker("initialiseer", glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);

@@ -5,7 +5,7 @@
 float hoogte(ivec2 hier)
 {
 	vec4 basis = imageLoad(basis0, hier);
-	return basis.r + basis.b;
+	return (basis.r + basis.b);// * hoogteSchaling;
 }
 
 float lokaleHoogte;
@@ -17,8 +17,8 @@ float hoogteVerschilMet(ivec2 richting)
 
 void main()
 {
-	vec4 	basis 				= imageLoad(basis0, PLEK);
-			lokaleHoogte 		= basis.r + basis.b;
+	vec4 	basis 				= imageLoad(basis0, PLEK);// * vec4(hoogteSchaling, 1, hoogteSchaling, 1);
+			lokaleHoogte 		= (basis.r + basis.b);
 	vec4 	oudeFluxen 			= imageLoad(flux0, PLEK);
 	vec4 	hoogteVerschillen 	= vec4(hoogteVerschilMet(ivec2(-1, 0)), hoogteVerschilMet(ivec2(1, 0)), hoogteVerschilMet(ivec2(0, 1)), hoogteVerschilMet(ivec2(0, -1)));
 	vec4 	nieuweFluxen 		= max(vec4(0.0f), oudeFluxen + (TIJD_STAP * PIJP_DIKTE * ((ZWAARTEKRACHT * hoogteVerschillen)/PIJP_LENGTE)));

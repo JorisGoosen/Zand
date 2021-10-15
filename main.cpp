@@ -111,7 +111,7 @@ int main()
 	{
 		scherm.doeRekenVerwerker("fluxen", 				glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
 		scherm.doeRekenVerwerker("waterHoogte", 		glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
-		scherm.doeRekenVerwerker("sedimentStroming", 	glm::uvec3(afmetingen.x, afmetingen.y, 1), bindVoorStroming);	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
+		scherm.doeRekenVerwerker("sedimentStroming", 	glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
 		scherm.doeRekenVerwerker("sedimentKopieren", 	glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
 		
 		pingPong = 1 - pingPong;

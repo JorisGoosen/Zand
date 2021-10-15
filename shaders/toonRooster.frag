@@ -1,6 +1,7 @@
 #version 440
 
 uniform float hoogteSchalingInv;
+uniform float hoogteSchaling;
 
 layout(binding = 0)	uniform sampler2D basis0;
 layout(binding = 4)	uniform sampler2D snelheid0;
@@ -28,8 +29,8 @@ void main()
 
 		snelheid.xy *= hoogteSchalingInv;
 
-		col = //vec4(length(snelheid.xy), basis.g * 10.0,
-				vec4(abs(snelheid.xy), 
+		col = vec4(length(snelheid.xy), basis.g * 10.0,
+				//vec4((snelheid.xy), 
 				 0.8, max(0.2, min(0.8, basis.b * 10.0)));
 	}
 }

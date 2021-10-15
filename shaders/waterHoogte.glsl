@@ -37,9 +37,9 @@ void main()
 	float verwachtteHoogte	= (som4(buren) + som4(burenSchuin)) / 8.0;
 
 //	vec2 snelheidRichting	= normalize(snelheid);
-	float 	lokaleHelling	= max(0.00001, min(1, max(0, basis.r - verwachtteHoogte) * hoogteSchalingInv)),//0.1 * min(1, max(0, dot(normaal, normalize(-vec3(snelheid.x,0,snelheid.y))))),
+	float 	lokaleHelling	= max(0.00001, min(1, max(0, basis.r - verwachtteHoogte))),//0.1 * min(1, max(0, dot(normaal, normalize(-vec3(snelheid.x,0,snelheid.y))))),
 			draagkracht		= DROESEMKRACHT * lokaleHelling * length(snelheid);
-
+/*
 	if(draagkracht > droesem)	
 	{
 		draagkracht = OPLOSHEID * (draagkracht - droesem);
@@ -59,7 +59,7 @@ void main()
 		basis.x	+= draagkracht;
 		droesem	-= draagkracht;
 	}
-
+*/
 	basis.g = droesem;
 	basis.a = normaal.x;
 

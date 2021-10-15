@@ -17,12 +17,15 @@ float hoogteVerschilMet(ivec2 richting)
 
 void main()
 {
-	vec4 	basis 				= imageLoad(basis0, PLEK);// * vec4(hoogteSchaling, 1, hoogteSchaling, 1);
+	vec4 	basis 				= imageLoad(basis0, PLEK);
 			lokaleHoogte 		= (basis.r + basis.b);
-	vec4 	oudeFluxen 			= imageLoad(flux0, PLEK);
-	vec4 	hoogteVerschillen 	= vec4(hoogteVerschilMet(ivec2(-1, 0)), hoogteVerschilMet(ivec2(1, 0)), hoogteVerschilMet(ivec2(0, 1)), hoogteVerschilMet(ivec2(0, -1)));
-	vec4 	nieuweFluxen 		= max(vec4(0.0f), oudeFluxen + (TIJD_STAP * PIJP_DIKTE * ((ZWAARTEKRACHT * hoogteVerschillen)/PIJP_LENGTE)));
-	float 	K 					= min(1, basis.b / (som4(nieuweFluxen) * TIJD_STAP));
+	vec4 	oudeFluxen 			= imageLoad(flux0, PLEK),
+		 	hoogteVerschillen 	= vec4(hoogteVerschilMet(ivec2(-1, 0)), hoogteVerschilMet(ivec2(1, 0)), hoogteVerschilMet(ivec2(0, 1)), hoogteVerschilMet(ivec2(0, -1))),
+		 	nieuweFluxen 		= max(vec4(0.0f), oudeFluxen + (TIJD_STAP * PIJP_DIKTE * ((ZWAARTEKRACHT * hoogteVerschillen)/PIJP_LENGTE))),
+			droesemFluxen		= nieuweFluxen * (basis.g / basis.b);
+	float 	waterK 				= min(1, basis.b / (som4(nieuweFluxen) 	* TIJD_STAP)),
+			droesemK 			= min(1, basis.g / (som4(droesemFluxen) * TIJD_STAP));
 
-	imageStore(flux1, PLEK, K * nieuweFluxen);
+	imageStore(flux1, 		PLEK, nieuweFluxen * waterK		);
+	imageStore(droesemFlux, PLEK, nieuweFluxen * droesemK	);
 }

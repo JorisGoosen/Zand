@@ -10,6 +10,7 @@ layout(binding = 1, rgba16f)	uniform image2D basis1;
 layout(binding = 2, rgba16f)	uniform image2D flux0;
 layout(binding = 3, rgba16f)	uniform image2D flux1;
 layout(binding = 4, rgba16f)  	uniform image2D snelheidPlt;
+layout(binding = 5, rgba16f)  	uniform image2D droesemFlux;
 #endif
 
 /*
@@ -33,4 +34,6 @@ float som4(vec4 telMeOp)
 {
     return telMeOp.x + telMeOp.y + telMeOp.z + telMeOp.w;
 }
+
+
 

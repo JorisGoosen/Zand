@@ -16,6 +16,7 @@ int main()
 							scherm.maakTextuur(						"flux0", 	afmetingen.x, afmetingen.y, false, false, false, GL_RGBA16F);
 							scherm.maakTextuur(						"flux1", 	afmetingen.x, afmetingen.y, false, false, false, GL_RGBA16F);
 							scherm.maakTextuur(						"snelheid", afmetingen.x, afmetingen.y, false, false, false, GL_RGBA16F);
+							scherm.maakTextuur(						"droesem", 	afmetingen.x, afmetingen.y, false, false, false, GL_RGBA16F);
 							
 	glClearColor(0,0,0,0);
 
@@ -64,6 +65,7 @@ int main()
 		scherm.bindTextuurPlaatje("flux0", 		2	+		pingPong);
 		scherm.bindTextuurPlaatje("flux1", 		2	+	(1-	pingPong));
 		scherm.bindTextuurPlaatje("snelheid", 	4);
+		scherm.bindTextuurPlaatje("droesem", 	5);
 
 		zetHoogteSchalingUniform();
 	};
@@ -75,6 +77,7 @@ int main()
 		scherm.bindTextuur("flux0", 			2	+		pingPong);
 		scherm.bindTextuur("flux1", 			2	+	(1-	pingPong));
 		scherm.bindTextuur("snelheid", 			4);
+		scherm.bindTextuur("droesem", 			5);
 
 		zetHoogteSchalingUniform();
 	};
@@ -92,6 +95,7 @@ int main()
 			scherm.bindTextuurPlaatje(	"basis0", 1);
 		}
 		scherm.bindTextuurPlaatje("snelheid", 	4);
+		scherm.bindTextuurPlaatje("droesem", 	5);
 
 		zetHoogteSchalingUniform();
 	};
@@ -111,8 +115,8 @@ int main()
 	{
 		scherm.doeRekenVerwerker("fluxen", 				glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
 		scherm.doeRekenVerwerker("waterHoogte", 		glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
-		scherm.doeRekenVerwerker("sedimentStroming", 	glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
-		scherm.doeRekenVerwerker("sedimentKopieren", 	glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
+		//scherm.doeRekenVerwerker("sedimentStroming", 	glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
+		//scherm.doeRekenVerwerker("sedimentKopieren", 	glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
 		
 		pingPong = 1 - pingPong;
 

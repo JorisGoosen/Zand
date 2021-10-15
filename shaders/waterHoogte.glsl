@@ -7,6 +7,11 @@ vec4 fluxUit(ivec2 uitRichting)
 	return imageLoad(flux1, PLEK + uitRichting);
 }
 
+vec4 droesemUit(ivec2 uitRichting)
+{
+	return imageLoad(droesemFlux, PLEK + uitRichting);
+}
+
 float grondHoogte(ivec2 hier)
 {
 	return imageLoad(basis0, PLEK + hier).r;// * hoogteSchaling;
@@ -20,13 +25,18 @@ float grondHoogte(ivec2 hier)
 
 void main()
 {
-	vec4 basis 				= imageLoad(basis0, PLEK);// * vec4(hoogteSchaling, 1, hoogteSchaling, 1); 
-	vec4 flux				= imageLoad(flux1,	PLEK);
-	vec4 inFlux				= vec4(fluxUit(ivec2(-1, 0)).g, fluxUit(ivec2(1, 0)).r, fluxUit(ivec2(0, 1)).a, fluxUit(ivec2(0, -1)).b);  
-	float volumeVerandering	= TIJD_STAP * (som4(inFlux) - som4(flux));
+	vec4 	basis 				= imageLoad(basis0, 		PLEK),
+			flux				= imageLoad(flux1,			PLEK),
+			droesemFlux			= imageLoad(droesemFlux,	PLEK),
+			inFlux				= vec4(fluxUit(		ivec2(-1, 0)).g, fluxUit(	ivec2(1, 0)).r, fluxUit(	ivec2(0, 1)).a, fluxUit(	ivec2(0, -1)).b),
+			inDroesem			= vec4(droesemUit(	ivec2(-1, 0)).g, droesemUit(ivec2(1, 0)).r, droesemUit(	ivec2(0, 1)).a, droesemUit(	ivec2(0, -1)).b);			
+	float 	volumeVerandering	= TIJD_STAP * (som4(inFlux) 	- som4(flux)		),
+			droesemVerandering	= TIJD_STAP * (som4(inDroesem) 	- som4(droesemFlux)	);
+
 	basis.b					+= volumeVerandering;
 
-	float droesem 			= basis.g;
+	float droesem 			= basis.g + droesemVerandering;
+	
 	vec2 snelheid			= vec2((inFlux.g - flux.g + flux.r - inFlux.r) / 2.0, (inFlux.a - flux.a + flux.b - inFlux.b ) / 2.0);
 	vec4 buren				= vec4(grondHoogte(ivec2(-1, 0)), grondHoogte(ivec2(1, 0)), grondHoogte(ivec2(0, 1)), grondHoogte(ivec2(0, -1))),
 			burenSchuin		= vec4(grondHoogte(ivec2(-1, 1)), grondHoogte(ivec2(1, 1)), grondHoogte(ivec2(-1, -1)), grondHoogte(ivec2(1, -1)));

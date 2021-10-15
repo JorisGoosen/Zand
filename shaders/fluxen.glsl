@@ -22,10 +22,10 @@ void main()
 	vec4 	oudeFluxen 			= imageLoad(flux0, PLEK),
 		 	hoogteVerschillen 	= vec4(hoogteVerschilMet(ivec2(-1, 0)), hoogteVerschilMet(ivec2(1, 0)), hoogteVerschilMet(ivec2(0, 1)), hoogteVerschilMet(ivec2(0, -1))),
 		 	nieuweFluxen 		= max(vec4(0.0f), oudeFluxen + (TIJD_STAP * PIJP_DIKTE * ((ZWAARTEKRACHT * hoogteVerschillen)/PIJP_LENGTE))),
-			droesemFluxen		= nieuweFluxen * (basis.g / basis.b);
+			droesemFluxen		= nieuweFluxen * (basis.g/basis.b) ;
 	float 	waterK 				= min(1, basis.b / (som4(nieuweFluxen) 	* TIJD_STAP)),
 			droesemK 			= min(1, basis.g / (som4(droesemFluxen) * TIJD_STAP));
 
-	imageStore(flux1, 		PLEK, nieuweFluxen * waterK		);
-	imageStore(droesemFlux, PLEK, nieuweFluxen * droesemK	);
+	imageStore(flux1, 		PLEK, nieuweFluxen 	* waterK	);
+	imageStore(droesemFlux, PLEK, droesemFluxen * droesemK	);
 }

@@ -27,8 +27,8 @@ uniform float hoogteSchalingInv;
 #define TIJD_STAP       0.1
 #define ZWAARTEKRACHT   10.0 //misschien op 1 zetten?
 #define DROESEMKRACHT   1.0
-#define OPLOSHEID       0.01
-#define BEZINKHEID      0.05
+#define OPLOSHEID       0.001
+#define BEZINKHEID      0.0
 
 float som4(vec4 telMeOp)
 {

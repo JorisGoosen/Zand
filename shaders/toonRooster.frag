@@ -29,8 +29,8 @@ void main()
 
 		snelheid.xy *= hoogteSchalingInv;
 
-		col = vec4(length(snelheid.xy), basis.g * 10.0,
+		col = vec4(length(snelheid.xy), basis.g,
 				//vec4((snelheid.xy), 
-				 0.8, max(0.2, min(0.8, basis.b * 10.0)));
+				 0.8, 0.8);//max(0.2, min(0.8, basis.b * 10.0)));
 	}
 }

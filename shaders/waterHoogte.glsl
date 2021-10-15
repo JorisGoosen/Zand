@@ -35,7 +35,7 @@ void main()
 
 	basis.b					+= volumeVerandering;
 
-	float droesem 			= basis.g + droesemVerandering;
+	float droesem 			= max(0.0f, basis.g + droesemVerandering);
 	
 	vec2 snelheid			= vec2((inFlux.g - flux.g + flux.r - inFlux.r) / 2.0, (inFlux.a - flux.a + flux.b - inFlux.b ) / 2.0);
 	vec4 buren				= vec4(grondHoogte(ivec2(-1, 0)), grondHoogte(ivec2(1, 0)), grondHoogte(ivec2(0, 1)), grondHoogte(ivec2(0, -1))),
@@ -47,10 +47,20 @@ void main()
 	float verwachtteHoogte	= (som4(buren) + som4(burenSchuin)) / 8.0;
 
 //	vec2 snelheidRichting	= normalize(snelheid);
-	float 	lokaleHelling	= max(0.00001, min(1, max(0, basis.r - verwachtteHoogte))),//0.1 * min(1, max(0, dot(normaal, normalize(-vec3(snelheid.x,0,snelheid.y))))),
+	float 	lokaleHelling	= max(0.0001, min(1, max(0, basis.r - verwachtteHoogte))),//0.1 * min(1, max(0, dot(normaal, normalize(-vec3(snelheid.x,0,snelheid.y))))),
 			draagkracht		= DROESEMKRACHT * lokaleHelling * length(snelheid);
 
-	if(draagkracht > droesem)	
+
+
+	//basis.b -= 0.001f;
+	//basis.b = max(0.0f, basis.b);
+
+	if(basis.b <= 0.0001f)
+	{
+		basis.x += droesem;
+		droesem = 0;
+	}
+	else if(draagkracht > droesem)	
 	{
 		draagkracht = OPLOSHEID * (draagkracht - droesem);
 		if(draagkracht > basis.x) draagkracht = basis.x;

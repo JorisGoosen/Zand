@@ -17,7 +17,7 @@ float hoogteVerschilMet(ivec2 richting)
 	//if(richting.x < 0 || richting.y < 0 || richting.x > imageSize(basis0).x || richting.y > imageSize(basis0).y)
 	//	return lokaleHoogte - (2 * hoogteSchaling);
 
-	return lokaleHoogte - hoogte(PLEK + richting);
+	return lokaleHoogte - hoogte(richting);
 }
 
 void main()

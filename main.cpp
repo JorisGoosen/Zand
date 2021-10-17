@@ -56,6 +56,7 @@ int main()
 		float hoogteSchaling = float(afmetingen.x);
 		glUniform1f(glGetUniformLocation(scherm.huidigProgramma(), "hoogteSchaling"), hoogteSchaling );//1.0 / (/*(rooster.schaling() * 1.0) */ 1.0 / float(afmetingen.x)));
 		glUniform1f(glGetUniformLocation(scherm.huidigProgramma(), "hoogteSchalingInv"), 1.0 / hoogteSchaling );
+
 	};
 
 	auto bindPlaatjes = [&]()

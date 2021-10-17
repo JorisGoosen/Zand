@@ -24,7 +24,7 @@ uniform float hoogteSchalingInv;
 
 #define PIJP_DIKTE      1.0
 #define PIJP_LENGTE     1.0
-#define TIJD_STAP       0.1
+#define TIJD_STAP       0.05
 #define ZWAARTEKRACHT   10.0 //misschien op 1 zetten?
 #define DROESEMKRACHT   1.
 #define OPLOSHEID       0.002

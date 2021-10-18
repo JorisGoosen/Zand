@@ -44,19 +44,19 @@ void main()
 
 		//vec4 droesem 	= texture(snelheid0,	texFrag);
 
-			vec4 	buren			= vec4(waterHoogte(ivec2(-1, 0)), waterHoogte(ivec2(1, 0)), waterHoogte(ivec2(0, 1)), waterHoogte(ivec2(0, -1)));
+			vec4 	buren			= vec4(waterHoogte(vec2(-1, 0)), waterHoogte(vec2(1, 0)), waterHoogte(vec2(0, 1)), waterHoogte(vec2(0, -1)));
 				//	burenSchuin		= vec4(waterHoogte(ivec2(-1, 1)), waterHoogte(ivec2(1, 1)), waterHoogte(ivec2(-1, -1)), waterHoogte(ivec2(1, -1)));
 			//	vec2 gradienten		= //vec2(((buren.y + basis.r) / 2.0) - ((buren.x + basis.r) / 2.0), ((buren.z + basis.r) / 2.0) - ((buren.w + basis.r) / 2.0));
 			//float verwachtteHoogte	= (som4(buren) + som4(burenSchuin)) / 8.0;
 
-			vec3 normaal			= normalize(vec3((buren.y - buren.x) * 2.0, 4.0, (buren.z - buren.w) * 2.0));
-									//normalize(vec3(((buren.y + basis.r) - (buren.x + basis.r)), 4.0, ((buren.z + basis.r) - (buren.w + basis.r))));
+			vec3 normaal			=// normalize(vec3((buren.y - buren.x) * 2.0, 4.0, (buren.z - buren.w) * 2.0));
+									normalize(vec3(((buren.y + basis.r) - (buren.x + basis.r)), 4.0, ((buren.z + basis.r) - (buren.w + basis.r))));
 
 			
 
 			vec3 	schijn		= reflect(zon, normaal);
 			float 	helder		= dot(zon, normaal),
-					schijnsel	= pow(max(0, min(1, dot(zichtRicht, schijn))), 900);
+					schijnsel	= pow(max(0, min(1, dot(normalize(zichtRicht), schijn))), 40);
 
 		
 

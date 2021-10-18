@@ -20,6 +20,8 @@ int main()
 							
 	glClearColor(0,0,0,0);
 
+	bool doeBron = true;
+
 	vierkantRooster rooster(128, 128, 4.0f);
 
 	float vlakverdelingen = 32;
@@ -43,8 +45,9 @@ int main()
 		if(action == GLFW_PRESS || action == GLFW_REPEAT)
 			switch(key)
 			{
-			case GLFW_KEY_I:	vlakverdelingen++;	zetVlakverdelingenStandaardenOpnieuw(); break;
-			case GLFW_KEY_J:	vlakverdelingen--;	zetVlakverdelingenStandaardenOpnieuw(); break;
+			case GLFW_KEY_I:		vlakverdelingen++;	zetVlakverdelingenStandaardenOpnieuw(); break;
+			case GLFW_KEY_J:		vlakverdelingen--;	zetVlakverdelingenStandaardenOpnieuw(); break;
+			case GLFW_KEY_SPACE:	doeBron = !doeBron;	break;
 			}
 	});
 
@@ -54,8 +57,9 @@ int main()
 	auto zetHoogteSchalingUniform = [&]()
 	{
 		float hoogteSchaling = float(afmetingen.x);
-		glUniform1f(glGetUniformLocation(scherm.huidigProgramma(), "hoogteSchaling"), hoogteSchaling );//1.0 / (/*(rooster.schaling() * 1.0) */ 1.0 / float(afmetingen.x)));
-		glUniform1f(glGetUniformLocation(scherm.huidigProgramma(), "hoogteSchalingInv"), 1.0 / hoogteSchaling );
+		glUniform1f(glGetUniformLocation(scherm.huidigProgramma(), "hoogteSchaling"), 		hoogteSchaling );//1.0 / (/*(rooster.schaling() * 1.0) */ 1.0 / float(afmetingen.x)));
+		glUniform1f(glGetUniformLocation(scherm.huidigProgramma(), "hoogteSchalingInv"), 	1.0 / hoogteSchaling );
+		glUniform1i(glGetUniformLocation(scherm.huidigProgramma(), "doeBron"),				int(doeBron));
 
 	};
 

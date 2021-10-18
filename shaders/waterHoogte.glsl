@@ -35,6 +35,10 @@ void main()
 
 	basis.b					+= volumeVerandering;
 
+
+	if(doeBron && distance(vec2(PLEK), (imageSize(basis0) / 2.0)) < 30)
+		basis.b = max(hoogteSchaling * 0.75, basis.b + basis.r) - basis.r;
+
 	float droesem 			= max(0.0f, basis.g + droesemVerandering);
 	
 	vec2 snelheid			= vec2((inFlux.g - flux.g + flux.r - inFlux.r) / 2.0, (inFlux.a - flux.a + flux.b - inFlux.b ) / 2.0);
@@ -44,12 +48,14 @@ void main()
 	vec3 normaal			= normalize(vec3((buren.y - buren.x) * 2.0, 4.0, (buren.z - buren.w) * 2.0));
 								//normalize(vec3(((buren.y + basis.r) - (buren.x + basis.r)), 4.0, ((buren.z + basis.r) - (buren.w + basis.r))));
 
-	float verwachtteHoogte	= (som4(buren) + som4(burenSchuin)) / 8.0;
+	float verwachtteHoogte	= (som4(buren) + (0.5 * som4(burenSchuin))) / 6.0;
+
+	verwachtteHoogte -= 2.0;
 
 //	vec2 snelheidRichting	= normalize(snelheid);
-	float 	lokaleHelling	= 1, //min(1, max(0, 1 - abs(dot(normaal, normalize(vec3(0, 1, 0)))))), //-vec3(snelheid.x,0,snelheid.y))))),
-			afwijking 		= max(0.0001, min(1, max(0, basis.r - verwachtteHoogte))),//
-			draagkracht		= DROESEMKRACHT * afwijking * lokaleHelling * length(snelheid);
+	float 	lokaleHelling	= min(1, max(0.2, dot(normaal, normalize(vec3(-snelheid.x,1.0,-snelheid.y))))), //-vec3(snelheid.x,0,snelheid.y))))),
+			afwijking 		= max(0.0, min(1, max(0, basis.r - verwachtteHoogte))),//
+			draagkracht		= DROESEMKRACHT * afwijking * lokaleHelling * min(1, length(snelheid) * hoogteSchalingInv);
 
 
 

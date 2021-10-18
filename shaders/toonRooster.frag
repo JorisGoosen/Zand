@@ -39,7 +39,7 @@ void main()
 	}
 	else
 	{
-		if(basis.b <= 0.01)
+		if(basis.b <= 0.001)
 			discard;
 
 		//vec4 droesem 	= texture(snelheid0,	texFrag);
@@ -49,21 +49,21 @@ void main()
 			//	vec2 gradienten		= //vec2(((buren.y + basis.r) / 2.0) - ((buren.x + basis.r) / 2.0), ((buren.z + basis.r) / 2.0) - ((buren.w + basis.r) / 2.0));
 			//float verwachtteHoogte	= (som4(buren) + som4(burenSchuin)) / 8.0;
 
-			vec3 normaal			=// normalize(vec3((buren.y - buren.x) * 2.0, 4.0, (buren.z - buren.w) * 2.0));
-									normalize(vec3(((buren.y + basis.r) - (buren.x + basis.r)), 4.0, ((buren.z + basis.r) - (buren.w + basis.r))));
+			vec3 normaal			=normalize(vec3((buren.y - buren.x) * 2.0, 4.0, (buren.z - buren.w) * 2.0));
+									//normalize(vec3(((buren.y + basis.r) - (buren.x + basis.r)), 4.0, ((buren.z + basis.r) - (buren.w + basis.r))));
 
 			
 
 			vec3 	schijn		= reflect(zon, normaal);
 			float 	helder		= dot(zon, normaal),
-					schijnsel	= pow(max(0, min(1, dot(normalize(zichtRicht), schijn))), 40);
+					schijnsel	= pow(max(0, min(1, dot(normalize(zichtRicht), schijn))), 16.);
 
 		
 
 		snelheid.xy *= hoogteSchalingInv;
 
 		col = mix(
-			vec4(0.0, 0.0, 
+			vec4(length(snelheid.xy), 0.0, 
 				//vec4((snelheid.xy), 
 				 0.4 + ( 0.6 * helder), 0.2 * helder + 0.5),
 				 vec4(vec3(1), 0.8), 

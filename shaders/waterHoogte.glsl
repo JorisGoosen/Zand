@@ -35,11 +35,23 @@ void main()
 
 	basis.b					+= volumeVerandering;
 
-
-	if(doeBron && distance(vec2(PLEK), (imageSize(basis0) / 2.0)) < 30)
-		basis.b = max(hoogteSchaling * 0.75, basis.b + basis.r) - basis.r;
-
 	float droesem 			= max(0.0f, basis.g + droesemVerandering);
+
+	bool ikBenBron = false;
+	
+	const float afstand = distance(vec2(PLEK), imageSize(basis0) / 2.0);
+	if(afstand < 20)
+	{
+		if(doeBron)
+		{
+			if(afstand < 10)
+				basis.b = max(hoogteSchaling * 0.6 - afstand, basis.b + basis.r) - basis.r;
+			droesem = DROESEMKRACHT * 0.5;
+		}
+		ikBenBron = true;
+	}
+
+	
 	
 	vec2 snelheid			= vec2((inFlux.g - flux.g + flux.r - inFlux.r) / 2.0, (inFlux.a - flux.a + flux.b - inFlux.b ) / 2.0);
 	vec4 buren				= vec4(grondHoogte(ivec2(-1, 0)), grondHoogte(ivec2(1, 0)), grondHoogte(ivec2(0, 1)), grondHoogte(ivec2(0, -1))),
@@ -48,42 +60,50 @@ void main()
 	vec3 normaal			= normalize(vec3((buren.y - buren.x) * 2.0, 4.0, (buren.z - buren.w) * 2.0));
 								//normalize(vec3(((buren.y + basis.r) - (buren.x + basis.r)), 4.0, ((buren.z + basis.r) - (buren.w + basis.r))));
 
-	float verwachtteHoogte	= (som4(buren) + (0.5 * som4(burenSchuin))) / 6.0;
-
-	verwachtteHoogte -= 2.0;
+	float verwachtteHoogte	= (som4(buren) + som4(burenSchuin)) / 8.0;
 
 //	vec2 snelheidRichting	= normalize(snelheid);
-	float 	lokaleHelling	= min(1, max(0.2, dot(normaal, normalize(vec3(-snelheid.x,1.0,-snelheid.y))))), //-vec3(snelheid.x,0,snelheid.y))))),
-			afwijking 		= max(0.0, min(1, max(0, basis.r - verwachtteHoogte))),//
-			draagkracht		= DROESEMKRACHT * afwijking * lokaleHelling * min(1, length(snelheid) * hoogteSchalingInv);
+	float 	lokaleHelling	= min(1, max(0.00, 1.0-dot(normaal, normalize(vec3(0,1,0))))), //-vec3(snelheid.x,0,snelheid.y))))),
+			afwijking 		= max(0.00, min(1, max(0, basis.r - verwachtteHoogte))),//
+			draagkracht		= DROESEMKRACHT * afwijking * lokaleHelling * min(2, length(snelheid) * hoogteSchalingInv);
 
 
 
 	//basis.b = max(0.0f, basis.b - 0.001f);
 
-	if(basis.b <= 0.0001f)
+
+	if(!ikBenBron && basis.b <= 0.001f) //zelfde als in frag
 	{
 		basis.x += droesem;
 		droesem = 0;
 	}
-	else if(draagkracht > droesem)	
+	else if(!ikBenBron)
 	{
-		draagkracht = OPLOSHEID * (draagkracht - droesem);
-		if(draagkracht > basis.x) draagkracht = basis.x;
 
-	//	draagkracht *= TIJD_STAP;
+		const float zandMult = 64.0;
 
-		basis.x	-= draagkracht;
-		droesem	+= draagkracht;
-	}
-	else if(draagkracht < droesem)
-	{
-		draagkracht = BEZINKHEID * (droesem - draagkracht);
+		if(draagkracht > droesem && OPLOSHEID > 0)	
+		{
+			draagkracht = OPLOSHEID * (draagkracht - droesem);
+		//	draagkracht = max(1, draagkracht);
 
-	//	draagkracht *= TIJD_STAP;
+			//draagkracht *= zandMult;
+			if(draagkracht * zandMult > basis.x) draagkracht = basis.x / zandMult;
 
-		basis.x	+= draagkracht;
-		droesem	-= draagkracht;
+		//	draagkracht *= TIJD_STAP;
+
+			basis.x	-= draagkracht * zandMult;
+			droesem	+= draagkracht ;
+		}
+		else if(draagkracht < droesem && BEZINKHEID > 0)
+		{
+			draagkracht = BEZINKHEID * (droesem - draagkracht);
+
+		//	draagkracht *= TIJD_STAP;
+
+			basis.x	+= draagkracht * zandMult;
+			droesem	-= draagkracht;
+		}
 	}
 
 	basis.g = droesem;

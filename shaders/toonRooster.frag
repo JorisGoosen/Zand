@@ -56,14 +56,14 @@ void main()
 
 			vec3 	schijn		= reflect(zon, normaal);
 			float 	helder		= dot(zon, normaal),
-					schijnsel	= pow(max(0, min(1, dot(normalize(zichtRicht), schijn))), 16.);
+					schijnsel	= pow(max(0, min(1, dot(normalize(zichtRicht), schijn))), 64.);
 
 		
 
 		snelheid.xy *= hoogteSchalingInv;
 
 		col = mix(
-			vec4(basis.g, basis.g * 10.0, 
+			vec4(0.0,0.0, //basis.g, basis.g * 10.0, 
 				//vec4((snelheid.xy), 
 				 0.4 + ( 0.6 * helder), 0.2 * helder + 0.5),
 				 vec4(vec3(1), 0.8), 

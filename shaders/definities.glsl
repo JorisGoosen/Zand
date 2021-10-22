@@ -21,15 +21,17 @@ layout(binding = 5, rgba16f)  	uniform image2D droesemFlux;
 
 uniform float hoogteSchaling; //Als de hoogte van zand tussen 0 en 1 ligt, dan moeten we de afstand tussen de cellen afleiden uit textuurgroote en schaling
 uniform float hoogteSchalingInv;
+uniform float bronHoogte;
 
 uniform bool doeBron;
+uniform bool doeSediment;
 
 #define PIJP_DIKTE      1.0
 #define PIJP_LENGTE     1.0
 #define TIJD_STAP       0.15
 #define ZWAARTEKRACHT   10.0 //misschien op 1 zetten?
 #define DROESEMKRACHT   1.0
-#define OPLOSHEID       0.001
+#define OPLOSHEID       0.1
 #define BEZINKHEID      0.333
 
 

@@ -20,11 +20,11 @@ int main()
 							
 	glClearColor(0,0,0,0);
 
-	bool doeBron = true;
+	bool doeBron = true, doeSediment = false;
 
 	vierkantRooster rooster(128, 128, 4.0f);
 
-	float vlakverdelingen = 32;
+	float vlakverdelingen = 32, bronHoogte = 0.5f;
 
 	auto zetVlakverdelingenStandaardenOpnieuw = [&]()
 	{
@@ -48,6 +48,9 @@ int main()
 			case GLFW_KEY_I:		vlakverdelingen++;	zetVlakverdelingenStandaardenOpnieuw(); break;
 			case GLFW_KEY_J:		vlakverdelingen--;	zetVlakverdelingenStandaardenOpnieuw(); break;
 			case GLFW_KEY_SPACE:	doeBron = !doeBron;	break;
+			case GLFW_KEY_ENTER:	doeSediment = !doeSediment;	break;
+			case GLFW_KEY_N:		bronHoogte = std::max(0.0f, bronHoogte - 0.02f); break;
+			case GLFW_KEY_M:		bronHoogte = std::min(10.0f, bronHoogte + 0.02f); break;
 			}
 	});
 
@@ -60,6 +63,8 @@ int main()
 		glUniform1f(glGetUniformLocation(scherm.huidigProgramma(), "hoogteSchaling"), 		hoogteSchaling );//1.0 / (/*(rooster.schaling() * 1.0) */ 1.0 / float(afmetingen.x)));
 		glUniform1f(glGetUniformLocation(scherm.huidigProgramma(), "hoogteSchalingInv"), 	1.0 / hoogteSchaling );
 		glUniform1i(glGetUniformLocation(scherm.huidigProgramma(), "doeBron"),				int(doeBron));
+		glUniform1i(glGetUniformLocation(scherm.huidigProgramma(), "doeSediment"),			int(doeSediment));
+		glUniform1f(glGetUniformLocation(scherm.huidigProgramma(), "bronHoogte"), 			bronHoogte );
 
 	};
 

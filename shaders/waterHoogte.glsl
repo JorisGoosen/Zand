@@ -45,8 +45,10 @@ void main()
 		if(doeBron)
 		{
 			if(afstand < 10)
-				basis.b = max(hoogteSchaling * 0.6 - afstand, basis.b + basis.r) - basis.r;
-			droesem = DROESEMKRACHT * 0.5;
+				basis.b = max(hoogteSchaling * bronHoogte - afstand, basis.b + basis.r) - basis.r;
+
+			if(doeSediment)
+				droesem = DROESEMKRACHT * 0.5;
 		}
 		ikBenBron = true;
 	}
@@ -82,6 +84,8 @@ void main()
 
 		const float zandMult = 64.0;
 
+		float bezinksel = max(1.0 / zandMult, draagkracht);
+
 		if(draagkracht > droesem && OPLOSHEID > 0)	
 		{
 			draagkracht = OPLOSHEID * (draagkracht - droesem);
@@ -95,13 +99,13 @@ void main()
 			basis.x	-= draagkracht * zandMult;
 			droesem	+= draagkracht ;
 		}
-		else if(draagkracht < droesem && BEZINKHEID > 0)
+		else if(bezinksel < droesem && droesem > draagkracht && (basis.x - verwachtteHoogte) < 0.0001 * hoogteSchaling)
 		{
-			draagkracht = BEZINKHEID * (droesem - draagkracht);
+			//draagkracht = BEZINKHEID * (droesem - draagkracht);
 
 		//	draagkracht *= TIJD_STAP;
 
-			float bezinksel = max(1.0 / zandMult, draagkracht);
+			
 
 			basis.x	+= bezinksel * zandMult;
 			droesem	-= bezinksel;

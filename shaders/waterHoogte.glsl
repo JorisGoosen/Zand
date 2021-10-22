@@ -101,8 +101,10 @@ void main()
 
 		//	draagkracht *= TIJD_STAP;
 
-			basis.x	+= draagkracht * zandMult;
-			droesem	-= draagkracht;
+			float bezinksel = max(1.0 / zandMult, draagkracht);
+
+			basis.x	+= bezinksel * zandMult;
+			droesem	-= bezinksel;
 		}
 	}
 

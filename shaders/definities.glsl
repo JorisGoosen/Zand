@@ -26,11 +26,11 @@ uniform bool doeBron;
 
 #define PIJP_DIKTE      1.0
 #define PIJP_LENGTE     1.0
-#define TIJD_STAP       0.05
+#define TIJD_STAP       0.15
 #define ZWAARTEKRACHT   10.0 //misschien op 1 zetten?
 #define DROESEMKRACHT   1.0
 #define OPLOSHEID       0.001
-#define BEZINKHEID      0.0333
+#define BEZINKHEID      0.333
 
 
 float som4(vec4 telMeOp)

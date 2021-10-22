@@ -62,12 +62,9 @@ void main()
 
 		snelheid.xy *= hoogteSchalingInv;
 
-		col = mix(
-			vec4(0.0,0.0, //basis.g, basis.g * 10.0, 
+		col =
+			vec4(vec2(schijnsel), //basis.g, basis.g * 10.0, 
 				//vec4((snelheid.xy), 
-				 0.4 + ( 0.6 * helder), 0.2 * helder + 0.5),
-				 vec4(vec3(1), 0.8), 
-				 schijnsel);
-				 //col = vec4(normaal, schijnsel);
+				 max(schijnsel, 0.4 + ( 0.6 * helder)), max(schijnsel, 0.2 * helder + 0.5));
 	}
 }

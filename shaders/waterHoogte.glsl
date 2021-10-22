@@ -40,17 +40,17 @@ void main()
 	bool ikBenBron = false;
 	
 	const float afstand = distance(vec2(PLEK), imageSize(basis0) / 2.0);
-	if(afstand < 20)
+	if(afstand < 5)
 	{
 		if(doeBron)
 		{
-			if(afstand < 18)
+			//if(afstand < 18)
 				basis.b = max(hoogteSchaling * bronHoogte - afstand, basis.b + basis.r) - basis.r;
 
 			if(doeSediment)
 				droesem = DROESEMKRACHT * 0.5;
 		}
-		ikBenBron = true;
+		//ikBenBron = true;
 	}
 
 	

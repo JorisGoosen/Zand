@@ -28,7 +28,7 @@ uniform bool doeSediment;
 
 #define PIJP_DIKTE      1.0
 #define PIJP_LENGTE     1.0
-#define TIJD_STAP       0.15
+#define TIJD_STAP       0.05
 #define ZWAARTEKRACHT   10.0 //misschien op 1 zetten?
 #define DROESEMKRACHT   1.0
 #define OPLOSHEID       0.4

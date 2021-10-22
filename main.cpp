@@ -24,7 +24,7 @@ int main()
 
 	vierkantRooster rooster(128, 128, 4.0f);
 
-	float vlakverdelingen = 32, bronHoogte = 0.5f;
+	float vlakverdelingen = 32, bronHoogte = 0.0f;
 
 	auto zetVlakverdelingenStandaardenOpnieuw = [&]()
 	{

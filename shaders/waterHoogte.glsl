@@ -44,7 +44,7 @@ void main()
 	{
 		if(doeBron)
 		{
-			if(afstand < 10)
+			if(afstand < 18)
 				basis.b = max(hoogteSchaling * bronHoogte - afstand, basis.b + basis.r) - basis.r;
 
 			if(doeSediment)

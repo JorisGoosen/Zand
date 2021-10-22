@@ -35,7 +35,7 @@ void main()
 	{
 		vec3 normaal	= vec3(basis.a, snelheid.zw);
 		float helder	=  dot(zon, normaal);
-		col	= max(0.15, helder) * vec4(abs(-1.0 + (2.0 * basis.x)) , basis.x * 0.8, 0, 1);
+		col	= max(0.25, helder) * vec4(basis.x * 0.8, 0.6 * abs(-1.0 + (2.0 * basis.x)) ,0, 1);
 	}
 	else
 	{
@@ -56,7 +56,7 @@ void main()
 
 			vec3 	schijn		= reflect(zon, normaal);
 			float 	helder		= dot(zon, normaal),
-					schijnsel	= pow(max(0, min(1, dot(normalize(zichtRicht), schijn))), 64.);
+					schijnsel	= pow(max(0, min(1, dot(normalize(zichtRicht), schijn))), 20.);
 
 		
 

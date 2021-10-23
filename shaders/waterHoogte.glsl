@@ -45,7 +45,8 @@ void main()
 		if(doeBron)
 		{
 			//if(afstand < 18)
-				basis.b += hoogteSchaling * bronHoogte; //max(hoogteSchaling * bronHoogte - afstand, basis.b + basis.r) - basis.r;
+				//basis.b += hoogteSchaling * bronHoogte; //
+				basis.b = max(hoogteSchaling * bronHoogte, basis.b);// + basis.r) - basis.r;
 
 			if(doeSediment)
 				droesem = DROESEMKRACHT * 0.5;
@@ -70,7 +71,7 @@ void main()
 			draagkracht		= DROESEMKRACHT * afwijking * lokaleHelling * min(2, length(snelheid) * hoogteSchalingInv);
 
 
-	float afkoeling = 0.001f ;
+	float afkoeling = 0.0001f ;
 	droesem += afkoeling;
 	basis.b = max(0.0f, basis.b - afkoeling);
 
@@ -114,7 +115,7 @@ void main()
 	}
 
 	basis.g = droesem;
-	basis.a = normaal.x;
+	//basis.a = normaal.x;
 
 	imageStore(basis1, 		PLEK, basis);// / vec4(hoogteSchaling, 1, hoogteSchaling, 1));
 	imageStore(snelheidPlt, PLEK, vec4(snelheid,normaal.yz));

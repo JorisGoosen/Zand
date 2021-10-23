@@ -10,6 +10,7 @@ int main()
 	scherm.maakRekenShader(			"waterHoogte", 			"shaders/waterHoogte.glsl"													);
 	scherm.maakRekenShader(			"sedimentStroming", 	"shaders/sedimentStroming.glsl"												);
 	scherm.maakRekenShader(			"sedimentKopieren", 	"shaders/sedimentKopieren.glsl"												);
+	scherm.maakRekenShader(			"waterMiddeling", 		"shaders/waterMiddeling.glsl"												);
 
 	glm::vec2 afmetingen = 	scherm.laadTextuurUitPng("basis.png", 	"basis0", 								false, false, false, GL_RGBA16F);
 							scherm.maakTextuur(						"basis1", 	afmetingen.x, afmetingen.y, false, false, false, GL_RGBA16F);
@@ -127,6 +128,7 @@ int main()
 		scherm.doeRekenVerwerker("waterHoogte", 		glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
 		//scherm.doeRekenVerwerker("sedimentStroming", 	glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
 		//scherm.doeRekenVerwerker("sedimentKopieren", 	glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
+		scherm.doeRekenVerwerker("waterMiddeling", 		glm::uvec3(afmetingen.x, afmetingen.y, 1), bindPlaatjes);		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT_EXT);
 		
 		pingPong = 1 - pingPong;
 

@@ -17,15 +17,23 @@ in vec2 texFrag;
 float waterHoogte(vec2 hier)
 {
 	//hier *= .5;
-	vec2 basis = texture(basis0, texFrag + (hier / textureSize(basis0, 0))).rb;// * hoogteSchaling;
+	vec2 basis = texture(basis0, texFrag + (hier / textureSize(basis0, 0))).ra;// * hoogteSchaling;
 
 	return basis.x + basis.y;
 }
 
 
+
+float grondHoogte(vec2 hier)
+{
+	//hier *= .5;
+	return texture(basis0, texFrag + (hier / textureSize(basis0, 0))).r;// * hoogteSchaling;
+}
+
+
 void main()
 {
-	vec4 basis 		= texture(basis0, 	texFrag) * vec4(hoogteSchalingInv, 1, hoogteSchalingInv, 1);
+	vec4 basis 		= texture(basis0, 	texFrag) * vec4(hoogteSchalingInv, 1, hoogteSchalingInv, hoogteSchalingInv);
 	vec4 snelheid	= texture(snelheid0,texFrag);
 	
 	const vec3 zon 	= normalize(vec3(1,1,0));
@@ -33,13 +41,18 @@ void main()
 
 	if(isZand)
 	{
-		vec3 normaal	= vec3(basis.a, snelheid.zw);
+			vec4 buren				= vec4(grondHoogte(ivec2(-1, 0)), grondHoogte(ivec2(1, 0)), grondHoogte(ivec2(0, 1)), grondHoogte(ivec2(0, -1)));
+			//burenSchuin		= vec4(grondHoogte(ivec2(-1, 1)), grondHoogte(ivec2(1, 1)), grondHoogte(ivec2(-1, -1)), grondHoogte(ivec2(1, -1)));
+		//	vec2 gradienten			= //vec2(((buren.y + basis.r) / 2.0) - ((buren.x + basis.r) / 2.0), ((buren.z + basis.r) / 2.0) - ((buren.w + basis.r) / 2.0));
+			vec3 normaal			= normalize(vec3((buren.y - buren.x) * 2.0, 4.0, (buren.z - buren.w) * 2.0));
+
+		//vec3 normaal	= vec3(basis.a, snelheid.zw);
 		float helder	=  dot(zon, normaal);
 		col	= max(0.25, helder) * vec4(basis.x * 0.8, max(basis.x * 0.8, 0.6 * abs(-1.0 + (2.0 * basis.x))) ,basis.x * 0.8, 1);
 	}
 	else
 	{
-		if(basis.b <= 0.001)
+		if(basis.a <= 0.001)
 			discard;
 
 		//vec4 droesem 	= texture(snelheid0,	texFrag);
@@ -63,7 +76,7 @@ void main()
 		snelheid.xy *= hoogteSchalingInv;
 
 		col =
-			vec4(max(schijnsel, 0.6 + ( 0.6 * helder)), max(schijnsel, helder * basis.b) ,(schijnsel), //basis.g, basis.g * 10.0, 
+			vec4(max(schijnsel, 0.6 + ( 0.6 * helder)), max(schijnsel, helder * basis.a) ,(schijnsel), //basis.g, basis.g * 10.0, 
 				//vec4((snelheid.xy), 
 				  max(schijnsel, 0.2 * helder + 0.7));
 	}

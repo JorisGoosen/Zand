@@ -26,12 +26,12 @@ uniform float bronHoogte;
 uniform bool doeBron;
 uniform bool doeSediment;
 
-#define PIJP_DIKTE      0.1
+#define PIJP_DIKTE      0.5
 #define PIJP_LENGTE     1.0
-#define TIJD_STAP       0.1
+#define TIJD_STAP       0.025
 #define ZWAARTEKRACHT   10.0 //misschien op 1 zetten?
 #define DROESEMKRACHT   1.0
-#define OPLOSHEID       0.6
+#define OPLOSHEID       0.00
 #define BEZINKHEID      0.333
 
 

@@ -42,7 +42,7 @@ void main()
     vec4 basis = texture(basis0, texFrag);
 
     if(isZand)	p.y = basis.r;
-    else        p.y = basis.r + basis.b;
+    else        p.y = basis.r + basis.a;
 
 	p.y *= hoogteSchalingInv;
 

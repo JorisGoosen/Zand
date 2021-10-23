@@ -5,6 +5,7 @@
 void main()
 {   
     vec4 basis = imageLoad(basis0, PLEK) * vec4(hoogteSchaling,1,hoogteSchaling,1);
+    basis.a = 0.0f;
     imageStore(basis0,      PLEK, basis);
     imageStore(basis1,      PLEK, basis);
     imageStore(flux0,       PLEK, vec4(0.0f));
